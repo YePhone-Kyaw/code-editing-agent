@@ -1,9 +1,9 @@
-import OpenAI from "openai";
+import Anthropic from "@anthropic-ai/sdk";
 import * as readline from "readline";
 import { Agent } from "./agent";
-import "dotenv/config";
+import "dotenv/config"
 
-const client = new OpenAI({
+const client = new Anthropic({
   apiKey: process.env["OPENAI_API_KEY"],
 });
 
@@ -12,7 +12,7 @@ async function main() {
 
   const getUserMessage = () =>
     new Promise<string>((resolve) => {
-      console.log("Ask anyting you wanna know");
+      console.log("Ask me anything you want to know.");
       process.stdout.write("");
       rl.once("line", resolve);
     });

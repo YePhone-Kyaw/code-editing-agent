@@ -17,7 +17,7 @@
     "typescript": "^7.0.2"
   },
   "dependencies": {
-    "dotenv": "^17.4.2",
-    "openai": "^7.17.0"
+    "@anthropic-ai/sdk": "^0.126.0",
+    "dotenv": "^17.4.2"
   }
 }

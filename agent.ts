@@ -1,34 +1,35 @@
-import OpenAI from "openai";
+import Anthropic from "@anthropic-ai/sdk";
 
 export class Agent {
   constructor(
-    private client: OpenAI,
+    private client: Anthropic,
     private getUserMessage: () => Promise<string>,
   ) {}
 
   async run() {
-    const conversation: OpenAI.Chat.ChatCompletionMessageParam[] = [];
+    const conversation: Anthropic.MessageParam[] = [];
 
-    console.log("Chat with AI (use Ctrl + C to quit)");
+    console.log("Chat with Claude (use Ctrl + C to quit)");
 
     while (true) {
       const userInput = await this.getUserMessage();
       conversation.push({ role: "user", content: userInput });
 
       const message = await this.runInference(conversation);
-      const reply = message.choices[0].message.content;
+      conversation.push({ role: "assistant", content: message.content });
 
-      conversation.push({ role: "assistant", content: reply });
-      console.log(`Assistant: ${reply}`);
+      for (const block of message.content) {
+        if (block.type == "text") {
+          console.log(`Claude: ${block.text}`);
+        }
+      }
     }
   }
-  private async runInference(
-    conversation: OpenAI.Chat.ChatCompletionMessageParam[],
-  ) {
-    return await this.client.chat.completions.create({
+  private async runInference(conversation: Anthropic.MessageParam[]) {
+    return await this.client.messages.create({
       max_tokens: 1024,
       messages: conversation,
-      model: "gpt-4o-mini",
+      model: "claude-opus-5",
     });
   }
 }

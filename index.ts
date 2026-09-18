@@ -12,8 +12,7 @@ async function main() {
 
   const getUserMessage = () =>
     new Promise<string>((resolve) => {
-      console.log("Ask me anything you want to know.");
-      process.stdout.write("");
+      process.stdout.write(`You: `);
       rl.once("line", resolve);
     });
 
